@@ -1,0 +1,58 @@
+<div class="bg-gray-50 dark:bg-gray-700 min-h-screen flex flex-col items-center justify-center p-4">
+  <div class="flex flex-col w-full md:w-[60%] h-[85vh] rounded-2xl shadow-xl overflow-hidden">
+    <!-- Header -->
+    <div class="p-4 flex items-center justify-between  bg-blue-500 text-white font-semibold text-lg text-center">
+      <fa-icon routerLink="'/'"  class="cursor-pointer" [icon]="faHome" />
+      <span class="text-center" > 💬 Live Chat</span>
+    </div>
+
+    <!-- Message List -->
+    <div class="message-list flex-1 overflow-y-auto p-4 bg-gray-100 dark:bg-gray-900 scroll-smooth space-y-3">
+
+      @for (msg of messages; track msg) {
+      <div class="flex items-center mb-2"
+        [ngClass]="{'justify-end': msg.senderId === currentUserId, 'justify-start': msg.senderId !== currentUserId}">
+
+        <!-- Avatar -->
+        <img [src]="getAvatar(msg.senderId)" alt="avatar" class="w-8 h-8 rounded-full object-cover shadow" [ngClass]="{
+          'order-2 ml-2': msg.senderId === currentUserId,
+          'order-1 mr-1': msg.senderId !== currentUserId
+        }" />
+
+
+        <!-- Bubble -->
+        <div class="relative max-w-[75%]  shadow transition-all" [ngClass]="{
+          'text-white rounded-br-none': msg.senderId === currentUserId,
+          'order-2': msg.senderId !== currentUserId
+        }">
+          <div class="relative py-2 px-3  rounded-2xl shadow transition-all" [ngClass]="{
+          'bg-blue-500 text-white rounded-br-none ': msg.senderId === currentUserId,
+          'bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200 rounded-bl-none order-0': msg.senderId !== currentUserId
+        }">
+            <p class="text-sm leading-none break-words">{{ msg.text }}</p>
+          </div>
+          <small class="block text-[10px] leading-none  mt-1" [ngClass]="{
+                    'text-gray-200 text-right ': msg.senderId === currentUserId,
+                    'text-gray-400': msg.senderId !== currentUserId
+                  }">
+            {{ msg.createdAt ? (msg.createdAt | date:'shortTime') : 'Hozir' }}
+          </small>
+        </div>
+      </div>
+      }
+    </div>
+
+    <!-- Input Area -->
+    <div class="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-3 flex gap-2 items-center">
+      <p-floatlabel class="w-full" variant="on">
+        <input [disabled]="!currentUser?.isActive" pInputText id="on_label" [(ngModel)]="messageContent"
+          autocomplete="off" (keyup.enter)="sendMessage()"
+          [placeholder]="currentUser?.isActive ? 'Xabar yozing...' :'Ilimos hisobingizni faolashtiring'"
+          class="w-full !bg-white dark:!bg-gray-700 !text-gray-900 dark:!text-gray-100 rounded-xl px-3 py-2 focus:ring-2 focus:ring-blue-400 outline-none transition" />
+      </p-floatlabel>
+
+      <p-button label="Yuborish" (click)="sendMessage()" [disabled]="!messageContent.trim()" severity="info"
+        icon="pi pi-send" iconPos="right" class="transition-transform" />
+    </div>
+  </div>
+</div>

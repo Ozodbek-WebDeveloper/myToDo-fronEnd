@@ -1,0 +1,81 @@
+<p-toast />
+<div class="card w-[80%] mt-10 bg-white mx-auto">
+    <p-table [value]="products" dataKey="_id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+        <ng-template #header>
+            <tr>
+                <th style="width:10%">№</th>
+                <th style="width:22%">Name</th>
+                <th style="width:32%">Email</th>
+                <th style="width:22%"> Status</th>
+                <th style="width:22%">role</th>
+                <th style="width:12%"></th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-product let-editing="editing" let-ri="rowIndex">
+            <tr [pEditableRow]="product">
+                <!-- id -->
+                <td>
+                    {{ri + 1}}
+                </td>
+                <!-- name -->
+                <td>
+                    <p-cellEditor>
+                        <ng-template #input>
+                            <input pInputText type="text" [(ngModel)]="product.name" required />
+                        </ng-template>
+                        <ng-template #output>
+                            {{product.name}}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <!-- email -->
+                <td>
+                    {{product.email}}
+                    <!-- <p-cellEditor>
+                        <ng-template #input>
+                            <input class="w-full" pInputText type="text" [(ngModel)]="product.email" required />
+                        </ng-template>
+                        <ng-template #output>
+                        </ng-template>
+                    </p-cellEditor> -->
+                </td>
+                <!-- status -->
+                <td>
+                    <p-cellEditor>
+                        <ng-template #input>
+                            <p-select [options]="statuses" appendTo="body" [(ngModel)]="product.isActive"
+                                [style]="{'width':'100%'}" />
+                        </ng-template>
+                        <ng-template #output>
+                            <p-tag [value]="product.isActive" [severity]="getSeverity(product.isActive)" />
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <!-- role -->
+                <td>
+                    <p-cellEditor>
+                        <ng-template #input>
+                            <p-select [options]="roles" appendTo="body" [(ngModel)]="product.roles" />
+                        </ng-template>
+                        <ng-template #output>
+                            <p-tag [value]="product.roles" [severity]="getSeverity(product.roles)" />
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <!-- actions -->
+                <td>
+                    <div class="flex items-center justify-center gap-2">
+                        <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
+                            (click)="onRowEditInit(product)" text rounded severity="secondary"></button>
+                        <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+                            (click)="onRowEditSave(product)" text rounded severity="secondary"></button>
+                        <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+                            (click)="onRowEditCancel(product, ri)" text rounded severity="secondary"></button>
+                        <button *ngIf="!editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-trash"
+                            (click)="onDelete(product)" text rounded severity="secondary"></button>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
