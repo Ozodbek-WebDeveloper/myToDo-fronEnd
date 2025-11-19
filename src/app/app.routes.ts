@@ -1,7 +1,7 @@
 import { Routes, } from '@angular/router';
 import { authGuard } from './service/auth.guard';
 import { Home } from './pages/home/home'
-    
+
 // ... qolgan kod
 export const routes: Routes = [
     {
@@ -28,6 +28,9 @@ export const routes: Routes = [
     {
         path: 'chat',
         loadComponent: () => import('./pages/chat/chat').then(c => c.Chat)
+    },
+    {
+        path: 'expenses', loadChildren: () => import('./pages/expenses/expenses-module').then(u => u.ExpensesModule)
     },
     {
         path: '**',

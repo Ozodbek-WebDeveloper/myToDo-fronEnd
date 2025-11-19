@@ -15,6 +15,7 @@ import { AuthService } from '../../service/auth.service';
 @Component({
   selector: 'app-user-table',
   templateUrl: 'user-table.html',
+  styleUrl: './user-table.scss',
   standalone: true,
   imports: [TableModule, ToastModule, CommonModule, TagModule, SelectModule, ButtonModule, InputTextModule, FormsModule],
 })
