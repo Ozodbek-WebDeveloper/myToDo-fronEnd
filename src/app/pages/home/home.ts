@@ -14,6 +14,9 @@ import { AuthService } from '../../service/auth.service';
 import { Router } from '@angular/router';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader'
 import { Auth } from '../../state/auth';
+
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -24,16 +27,45 @@ import { Auth } from '../../state/auth';
 })
 
 export class Home implements OnInit {
-  constructor(private todo: TodoService, private messageService: MessageService, private auth: AuthService, private route: Router, private me: Auth) {
+  constructor(private todo: TodoService, private messageService: MessageService, private auth: AuthService, private route: Router, private me: Auth, private http: HttpClient) {
     this.me.user$.subscribe(u => {
       this.user = u
     })
   }
 
+  // api = 'https://mytodo-backend-production.up.railway.app/api/auth/register'
+  // // data = { 'username', 'userna', '111111'}
+  // registerUser(): Observable<any> {
+
+  //   const dataToSend = {
+  //     name: 'userna',
+  //     email: 'userna@example.com',
+  //     password: '111111'
+  //   };
+
+  //   return this.http.post(this.api, dataToSend);
+  // }
+
+  // testRegister(): void {
+  //   this.registerUser().subscribe({
+  //     next: (response) => {
+  //       console.log('Server javobi:', response);
+  //       alert('Ro‘yxatdan o‘tish muvaffaqiyatli!');
+  //     },
+  //     error: (err) => {
+  //       console.error('API xatosi:', err);
+  //       alert(`Xato: ${err.error?.message || 'Server xatosi'}`);
+  //     },
+  //     complete: () => {
+  //       console.log('Ro‘yxatga olish jarayoni tugadi.');
+  //     }
+  //   });
+  // }
   ngOnInit(): void {
     this.getTodos()
     this.auth.getMe()
     this.getAll()
+    // this.testRegister()
   }
 
 
