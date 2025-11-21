@@ -1,0 +1,69 @@
+<p-dialog
+  header="Create Expense"
+  [(visible)]="visible"
+  [modal]="true"
+  [style]="{width: '450px'}">
+
+  <div class="flex flex-col gap-4">
+
+    <div class="flex flex-col gap-2">
+      <label for="category">Category</label>
+      <p-select [ngModel]="value"   [editable]="true"   [options]="cities" optionLabel="name" appendTo="body"   placeholder="City" />
+    </div>
+
+    <div class="flex flex-col">
+      <label for="name">name</label>
+      <input id="name " type="text" pInputText />
+    </div>
+
+    <div class="flex item-center gap-2">
+      <div class="flex flex-col">
+        <label for="amount">Amount</label>
+        <input id="amount" type="number" pInputText />
+      </div>
+
+      <div class="flex item-center gap-2">
+        <div class="flex items-center">
+          <p-radiobutton name="pizza" value="Cheese" [(ngModel)]="cashier" inputId="ingredient1" />
+          <label for="ingredient1" class="ml-2 cursor-pointer">naqt</label>
+        </div>
+
+        <div class="flex items-center">
+          <p-radiobutton name="pizza" value="Mushroom" [(ngModel)]="cashier" inputId="ingredient2" />
+          <label for="ingredient2" class="ml-2 cursor-pointer">karta</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex  gap-4" >
+      <div class="flex items-center">
+        <p-checkbox inputId="ingredient1" name="pizza"value="Cheese" [(ngModel)]="pizza" />
+        <label for="ingredient1" class="ml-2"> vaqt </label>
+      </div>
+      <div class="flex items-center">
+        <p-checkbox inputId="ingredient1" name="pizza"value="Cheese" [(ngModel)]="pizza1" />
+        <label for="ingredient1" class="ml-2"> description </label>
+      </div>
+      <div class="flex items-center">
+        <p-checkbox inputId="ingredient1" name="pizza"value="Cheese" [(ngModel)]="pizza2" />
+        <label for="ingredient1" class="ml-2"> chek </label>
+      </div>
+    </div>
+
+    <div class="flex flex-col">
+      <label for="date">Date</label>
+      <p-datepicker [(ngModel)]="date" [showButtonBar]="true" appendTo="body"  placeholder="Basic" />
+    </div>
+
+    <div class="flex flex-col">
+      <label for="desc">Description</label>
+      <textarea id="desc" rows="3" pInputTextarea></textarea>
+    </div>
+
+  </div>
+
+  <ng-template pTemplate="footer">
+    <button pButton label="Cancel" class="p-button-text"></button>
+    <button pButton label="Create" class="p-button-primary"></button>
+  </ng-template>
+</p-dialog>

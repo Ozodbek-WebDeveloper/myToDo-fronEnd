@@ -7,7 +7,7 @@ import { Auth } from '../../state/auth';
 import { IgetUser } from '../../models/user';
 import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
-// 
+//
 
 @Component({
   selector: 'app-navbar',
@@ -40,6 +40,11 @@ export class NavbarComponent implements OnInit {
         command: () => this.route.navigate(['chat'])
       },
       {
+        label: 'expenses',
+        icon: 'pi pi-dollar',
+        command: () => this.route.navigate(['expenses'])
+      },
+      {
         separator: true,
       },
       {
@@ -57,5 +62,4 @@ export class NavbarComponent implements OnInit {
   logoutEmit() {
     this.logout.emit();
   }
-
-} 
+}
