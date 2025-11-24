@@ -25,3 +25,34 @@ export interface Itodo {
     description: string | null,
     priority: string | null
 }
+
+
+export interface ICategory {
+  _id?: string | null,
+  name: string | null,
+  createdAt?: string | null,
+  updatedAt?: string | null,
+}
+
+
+export interface IExpenseItems{
+  _id?: string | null,
+  categoryId: string | null,
+  name: string | null,
+  createdAt?: string | null,
+  updatedAt?: string | null,
+}
+
+
+export  interface  IExpense{
+  _id?: string | null,
+  itemId: string | null,
+  name: string | null,
+  description?:string | null,
+  price: number | null,
+  date?:string | null,
+  paymentMethod: string | null,
+  receipt_image?: string | null,
+  createdAt?: string | null,
+  updatedAt?:string | null,
+}

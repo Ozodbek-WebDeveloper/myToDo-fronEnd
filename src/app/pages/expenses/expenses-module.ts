@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule} from 'primeng/dialog';
@@ -9,6 +9,8 @@ import {TextareaModule} from 'primeng/textarea';
 import {DatePickerModule} from 'primeng/datepicker';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import {CheckboxModule} from 'primeng/checkbox';
+import {Toast} from 'primeng/toast';
+import {FileUpload} from 'primeng/fileupload';
 // components
 import { ExpensesRoutingModule } from './expenses-routing-module';
 import { Expenses } from './expenses/expenses';
@@ -29,8 +31,13 @@ import {Expense} from './components/expense/expense';
     TextareaModule,
     DatePickerModule,
     RadioButtonModule,
-    CheckboxModule
+    CheckboxModule,
+    Toast,
+    ReactiveFormsModule,
+    FileUpload,
   ]
 })
-export class ExpensesModule { }
+export class ExpensesModule {
+
+}
 

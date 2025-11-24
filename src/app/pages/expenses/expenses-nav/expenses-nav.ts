@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,Output,EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-expenses-nav',
@@ -6,4 +6,20 @@ import { Component } from '@angular/core';
   styleUrl: './expenses-nav.scss',
   standalone:false
 })
-export class ExpensesNav { }
+export class ExpensesNav {
+    @Output() showCategory = new EventEmitter();
+    @Output() showExpensesItems = new EventEmitter();
+    @Output() showExpenses = new EventEmitter();
+
+    Category():void{
+      this.showCategory.emit();
+    }
+
+    ExpensesItems():void{
+      this.showExpensesItems.emit();
+    }
+
+    Expenses():void{
+      this.showExpenses.emit();
+    }
+}

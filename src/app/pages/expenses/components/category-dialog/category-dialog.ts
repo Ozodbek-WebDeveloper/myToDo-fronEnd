@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output,EventEmitter } from '@angular/core';
+import {ICategory} from '../../../../models/user';
 
 @Component({
   selector: 'app-category-dialog',
@@ -7,5 +8,17 @@ import { Component } from '@angular/core';
   standalone:false
 })
 export class CategoryDialog {
-  visible: boolean = false;
+  @Input() visible !: boolean
+  @Input() isLoading!: boolean
+  @Output() closeDialog : EventEmitter<any> = new EventEmitter();
+  @Output() create:EventEmitter<ICategory> = new EventEmitter();
+  category: ICategory = {
+    name: '',
+  }
+  close () : void {
+    this.closeDialog.emit();
+  }
+  createCategory(){
+    this.create.emit(this.category)
+  }
 }

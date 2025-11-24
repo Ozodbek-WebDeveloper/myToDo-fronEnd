@@ -1,22 +1,23 @@
-<p-dialog
-  header="Create Item"
-  [(visible)]="visible"
-  [modal]="true"
-  [style]="{width: '400px'}">
+  <p-dialog
+    header="Create Item"
+    [(visible)]="visible"
+    (onHide)="close()"
+    [modal]="true"
+    [style]="{width: '400px'}">
 
-  <div class=" flex flex-col gap-4">
-    <div class="flex flex-col gap-2">
-      <label for="category">Category</label>
-      <p-select [ngModel]="value"     [options]="cities" optionLabel="name" appendTo="body"   placeholder="City" />
+    <div class=" flex flex-col gap-4">
+      <div class="flex flex-col gap-2">
+        <label for="category">Category</label>
+        <p-select [(ngModel)]="item.categoryId"  optionValue="_id"    [options]="categories"  [editable]="true" optionLabel="name" appendTo="body"   placeholder="Category Tanlang" />
+      </div>
+  <!--        {{categories | json}}-->
+      <div class="flex flex-col gap-2">
+        <label for="name">Item Name</label>
+        <input id="name"  [(ngModel)]="item.name" type="text" placeholder="add new Items" pInputText />
+      </div>
     </div>
-
-    <div class="flex flex-col gap-2">
-      <label for="name">Item Name</label>
-      <input id="name" type="text" placeholder="add new Items" pInputText />
-    </div>
-  </div>
-  <ng-template pTemplate="footer">
-    <button pButton label="Cancel" class="p-button-text"></button>
-    <button pButton label="Create" class="p-button-primary"></button>
-  </ng-template>
-</p-dialog>
+    <ng-template pTemplate="footer">
+      <button pButton label="Cancel"  (click)="close()" class="p-button-text"></button>
+      <button pButton [label]="isLoading? 'Loading' : 'Create'" (click)="createItems()" [disabled]="isLoading" class="p-button-primary"></button>
+    </ng-template>
+  </p-dialog>

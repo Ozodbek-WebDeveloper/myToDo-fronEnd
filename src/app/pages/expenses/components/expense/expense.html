@@ -1,70 +1,86 @@
 <p-dialog
   header="Create Expense"
   [(visible)]="visible"
+  (onHide)="close()"
   [modal]="true"
   [style]="{width: '450px'}">
 
-  <div class="flex flex-col gap-4">
+  <form [formGroup]="expenseForm" (ngSubmit)="createExpense()" >
+    <div class="flex flex-col gap-4">
 
-    <div class="flex flex-col gap-2">
-      <label for="category">Category</label>
-      <p-select [ngModel]="value"   [editable]="true"   [options]="cities" optionLabel="name" appendTo="body"   placeholder="City" />
-    </div>
+      <div class="flex flex-col gap-2">
+        <label for="category">Items</label>
+        <p-select formControlName="itemId"    [editable]="true"   [options]="expenseItems" optionValue="_id" optionLabel="name" appendTo="body"   placeholder="Items" />
+      </div>
 
-    <div class="flex flex-col">
-      <label for="name">name</label>
-      <input id="name " type="text" pInputText />
-    </div>
-
-    <div class="flex item-center gap-2">
       <div class="flex flex-col">
-        <label for="amount">Amount</label>
-        <input id="amount" type="number" pInputText />
+        <label for="name">name</label>
+        <input formControlName="name" id="name " type="text" placeholder="add new expense" pInputText />
       </div>
 
       <div class="flex item-center gap-2">
-        <div class="flex items-center">
-          <p-radiobutton name="pizza" value="Cheese" [(ngModel)]="cashier" inputId="ingredient1" />
-          <label for="ingredient1" class="ml-2 cursor-pointer">naqt</label>
+        <div class="flex flex-col">
+          <label for="amount">Price</label>
+          <input  placeholder="price" formControlName="price" id="amount" type="number" pInputText />
         </div>
 
-        <div class="flex items-center">
-          <p-radiobutton name="pizza" value="Mushroom" [(ngModel)]="cashier" inputId="ingredient2" />
-          <label for="ingredient2" class="ml-2 cursor-pointer">karta</label>
+        <div class="flex item-center gap-2">
+          <div class="flex items-center">
+            <p-radiobutton  name="pizza" value="cash" formControlName="paymentMethod" inputId="ingredient1" />
+            <label for="ingredient1" class="ml-2 cursor-pointer">cash</label>
+          </div>
+
+          <div class="flex items-center">
+            <p-radiobutton name="pizza" value="card" formControlName="paymentMethod" inputId="ingredient2" />
+            <label for="ingredient2" class="ml-2 cursor-pointer">card</label>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="flex  gap-4" >
-      <h1>shularni qoshmoqchimisz</h1>
-      <div class="flex items-center">
-        <p-checkbox inputId="ingredient1" name="pizza"value="Cheese" [(ngModel)]="pizza" />
-        <label for="ingredient1" class="ml-2"> vaqt </label>
+      <div class="flex  gap-4" >
+        <h1>shularni qoshmoqchimisz</h1>
+        <div class="flex items-center">
+          <p-checkbox inputId="viewData" formControlName="viewData" binary="true" />
+          <label for="viewData" class="ml-2 cursor-pointer"> vaqt </label>
+        </div>
+        <div class="flex items-center">
+          <p-checkbox inputId="viewDescription" formControlName="viewDescription" binary="true" />
+          <label for="viewDescription" class="ml-2 cursor-pointer "> description </label>
+        </div>
+        <div class="flex items-center">
+          <p-checkbox inputId="viewImage" formControlName="viewImage" binary="true"  />
+          <label for="viewImage" class="ml-2 cursor-pointer"> chek </label>
+        </div>
       </div>
-      <div class="flex items-center">
-        <p-checkbox inputId="ingredient1" name="pizza"value="Cheese" [(ngModel)]="pizza1" />
-        <label for="ingredient1" class="ml-2"> description </label>
+
+      @if (expenseForm.get('viewData')?.value) {
+        <div class="flex flex-col">
+          <label for="date">Date</label>
+          <p-datepicker formControlName="date" [showButtonBar]="true" appendTo="body"  placeholder="Basic" />
+        </div>
+      }
+
+      @if (expenseForm.get('viewDescription')?.value){
+        <div class="flex flex-col">
+          <label for="desc">Description</label>
+          <textarea  formControlName="description" id="desc" rows="3" pInputTextarea></textarea>
+        </div>
+      }
+      @if (expenseForm.get('viewImage')?.value) {
+        <div class="card">
+          <p-toast />
+          <p-fileupload name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php" (onUpload)="onUpload($event)" [multiple]="true" accept="image/*" maxFileSize="1000000" mode="advanced">
+            <ng-template #empty>
+              <div>Drag and drop files to here to upload.</div>
+            </ng-template>
+          </p-fileupload>
+        </div>
+      }
+    </div>
+      <div class="flex mt-2 justify-end">
+        <button pButton label="Cancel" class="p-button-text"></button>
+        <button pButton label="Create"  type="submit" class="p-button-primary"></button>
       </div>
-      <div class="flex items-center">
-        <p-checkbox inputId="ingredient1" name="pizza"value="Cheese" [(ngModel)]="pizza2" />
-        <label for="ingredient1" class="ml-2"> chek </label>
-      </div>
-    </div>
+  </form>
 
-    <div class="flex flex-col">
-      <label for="date">Date</label>
-      <p-datepicker [(ngModel)]="date" [showButtonBar]="true" appendTo="body"  placeholder="Basic" />
-    </div>
-
-    <div class="flex flex-col">
-      <label for="desc">Description</label>
-      <textarea id="desc" rows="3" pInputTextarea></textarea>
-    </div>
-
-  </div>
-
-  <ng-template pTemplate="footer">
-    <button pButton label="Cancel" class="p-button-text"></button>
-    <button pButton label="Create" class="p-button-primary"></button>
-  </ng-template>
 </p-dialog>
