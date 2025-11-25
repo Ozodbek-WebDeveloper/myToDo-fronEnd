@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import {ICategory, IExpenseItems} from '../models/user';
+import {ICategory, IExpense, IExpenseItems} from '../models/user';
 
 
 @Injectable({
@@ -28,5 +28,13 @@ export class ExpenseService {
 
   getAllExpenseItems():Observable<IExpenseItems[]>{
     return  this.http.get<IExpenseItems[]>(`${this.baseUrl}/expenses/allItem`);
+  }
+
+  createExpense(expense:IExpense):Observable<IExpense>{
+    return  this.http.post<IExpense>(`${this.baseUrl}/expenses/expens`, expense);
+  }
+
+  getAllExpense():Observable<IExpense[]>{
+    return  this.http.get<IExpense[]>(`${this.baseUrl}/expenses/allExpens`);
   }
 }

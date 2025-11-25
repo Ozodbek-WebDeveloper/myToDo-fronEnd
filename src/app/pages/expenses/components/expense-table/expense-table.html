@@ -1,0 +1,47 @@
+<p-table [value]="expenses" stripedRows [tableStyle]="{'min-width': '50rem'}">
+  <ng-template pTemplate="header">
+    <tr>
+      <th style="width:5%">№</th>
+      <th style="width:10%">Category</th>
+      <th style="width:10%">Items</th>
+      <th style="width:10%">name</th>
+      <th style="width:10%">Price</th>
+      <th style="width:10%">date</th>
+      <th style="width:22%">description</th>
+      <th style="width:12%">actions</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-product let-rowIndex="rowIndex" >
+    <tr>
+      <td>{{rowIndex + 1}}</td>
+      <td>{{ product.itemId.categoryId.name }}</td>
+      <td>{{product.itemId.name}}</td>
+      <td>{{ product.name }}</td>
+      <td>{{product.price}}</td>
+      <td>{{product.date | date}}</td>
+      <td>{{product.description}} </td>
+      <td>
+        <div class="flex items-center justify-center gap-2">
+          <button
+            pButton
+            pRipple
+            type="button"
+            icon="pi pi-pencil"
+            text
+            rounded
+            severity="secondary"
+          ></button>
+          <button
+            pButton
+            pRipple
+            type="button"
+            icon="pi pi-trash"
+            text
+            rounded
+            severity="secondary"
+          ></button>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

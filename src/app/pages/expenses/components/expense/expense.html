@@ -3,84 +3,184 @@
   [(visible)]="visible"
   (onHide)="close()"
   [modal]="true"
-  [style]="{width: '450px'}">
+  [style]="{width: '450px'}"
+  [draggable]="false"
+  [resizable]="false">
 
-  <form [formGroup]="expenseForm" (ngSubmit)="createExpense()" >
+  <form [formGroup]="expenseForm" (ngSubmit)="createExpense()">
     <div class="flex flex-col gap-4">
 
+      <!-- Items -->
       <div class="flex flex-col gap-2">
-        <label for="category">Items</label>
-        <p-select formControlName="itemId"    [editable]="true"   [options]="expenseItems" optionValue="_id" optionLabel="name" appendTo="body"   placeholder="Items" />
+        <label for="category" class="font-semibold">Items *</label>
+        <p-select
+          formControlName="itemId"
+          [editable]="true"
+          [options]="expenseItems"
+          optionValue="_id"
+          optionLabel="name"
+          appendTo="body"
+          placeholder="Select item"
+        />
+        @if (expenseForm.get('itemId')?.hasError('required') && expenseForm.get('itemId')?.touched) {
+          <p-message severity="error" variant="simple" size="small">Item is required</p-message>
+        }
       </div>
 
-      <div class="flex flex-col">
-        <label for="name">name</label>
-        <input formControlName="name" id="name " type="text" placeholder="add new expense" pInputText />
+      <!-- Name -->
+      <div class="flex flex-col gap-2">
+        <label for="name" class="font-semibold">Expense Name *</label>
+        <input
+          formControlName="name"
+          id="name"
+          type="text"
+          placeholder="Enter expense name"
+          pInputText
+        />
+        @if (expenseForm.get('name')?.hasError('required') && expenseForm.get('name')?.touched) {
+          <p-message severity="error" variant="simple" size="small">Name is required</p-message>
+        }
       </div>
 
-      <div class="flex item-center gap-2">
-        <div class="flex flex-col">
-          <label for="amount">Price</label>
-          <input  placeholder="price" formControlName="price" id="amount" type="number" pInputText />
+      <!-- Price & Payment Method -->
+      <div class="flex gap-4">
+        <div class="flex flex-col gap-2 flex-1">
+          <label for="amount" class="font-semibold">Price *</label>
+          <input
+            placeholder="0.00"
+            formControlName="price"
+            id="amount"
+            type="number"
+            pInputText
+          />
+          @if (expenseForm.get('price')?.hasError('required') && expenseForm.get('price')?.touched) {
+            <p-message severity="error" variant="simple" size="small">Price is required</p-message>
+          }
         </div>
 
-        <div class="flex item-center gap-2">
-          <div class="flex items-center">
-            <p-radiobutton  name="pizza" value="cash" formControlName="paymentMethod" inputId="ingredient1" />
-            <label for="ingredient1" class="ml-2 cursor-pointer">cash</label>
+        <div class="flex flex-col gap-2">
+          <label class="font-semibold">Payment Method *</label>
+          <div class="flex gap-3 mt-2">
+            <div class="flex items-center">
+              <p-radiobutton
+                name="payment"
+                value="cash"
+                formControlName="paymentMethod"
+                inputId="cash"
+              />
+              <label for="cash" class="ml-2 cursor-pointer">💵 Cash</label>
+            </div>
+
+            <div class="flex items-center">
+              <p-radiobutton
+                name="payment"
+                value="card"
+                formControlName="paymentMethod"
+                inputId="card"
+              />
+              <label for="card" class="ml-2 cursor-pointer">💳 Card</label>
+            </div>
           </div>
+          @if (expenseForm.get('paymentMethod')?.hasError('required') && expenseForm.get('paymentMethod')?.touched) {
+            <p-message severity="error" variant="simple" size="small">paymentMethod is required</p-message>
+          }
+        </div>
+      </div>
 
+      <!-- Optional Fields -->
+      <div class="border-t pt-4">
+        <p class="font-semibold mb-3">Additional Information (Optional)</p>
+        <div class="flex flex-wrap gap-4">
           <div class="flex items-center">
-            <p-radiobutton name="pizza" value="card" formControlName="paymentMethod" inputId="ingredient2" />
-            <label for="ingredient2" class="ml-2 cursor-pointer">card</label>
+            <p-checkbox inputId="viewData" formControlName="viewData" binary="true" />
+            <label for="viewData" class="ml-2 cursor-pointer">📅 Date</label>
+          </div>
+          <div class="flex items-center">
+            <p-checkbox inputId="viewDescription" formControlName="viewDescription" binary="true" />
+            <label for="viewDescription" class="ml-2 cursor-pointer">📝 Description</label>
+          </div>
+          <div class="flex items-center">
+            <p-checkbox inputId="viewImage" formControlName="viewImage" binary="true" />
+            <label for="viewImage" class="ml-2 cursor-pointer">📷 Receipt</label>
           </div>
         </div>
       </div>
 
-      <div class="flex  gap-4" >
-        <h1>shularni qoshmoqchimisz</h1>
-        <div class="flex items-center">
-          <p-checkbox inputId="viewData" formControlName="viewData" binary="true" />
-          <label for="viewData" class="ml-2 cursor-pointer"> vaqt </label>
-        </div>
-        <div class="flex items-center">
-          <p-checkbox inputId="viewDescription" formControlName="viewDescription" binary="true" />
-          <label for="viewDescription" class="ml-2 cursor-pointer "> description </label>
-        </div>
-        <div class="flex items-center">
-          <p-checkbox inputId="viewImage" formControlName="viewImage" binary="true"  />
-          <label for="viewImage" class="ml-2 cursor-pointer"> chek </label>
-        </div>
-      </div>
-
+      <!-- Conditional Fields -->
       @if (expenseForm.get('viewData')?.value) {
-        <div class="flex flex-col">
-          <label for="date">Date</label>
-          <p-datepicker formControlName="date" [showButtonBar]="true" appendTo="body"  placeholder="Basic" />
+        <div class="flex flex-col gap-2">
+          <label for="date" class="font-semibold">Date</label>
+          <p-datepicker
+            formControlName="date"
+            [showButtonBar]="true"
+            appendTo="body"
+            placeholder="Select date"
+            dateFormat="dd/mm/yy"
+          />
+          @if (expenseForm.get('date')?.hasError('required') && expenseForm.get('date')?.touched) {
+            <p-message severity="error" variant="simple" size="small">Date is required</p-message>
+          }
         </div>
       }
 
-      @if (expenseForm.get('viewDescription')?.value){
-        <div class="flex flex-col">
-          <label for="desc">Description</label>
-          <textarea  formControlName="description" id="desc" rows="3" pInputTextarea></textarea>
+      @if (expenseForm.get('viewDescription')?.value) {
+        <div class="flex flex-col gap-2">
+          <label for="desc" class="font-semibold">Description</label>
+          <textarea
+            formControlName="description"
+            id="desc"
+            rows="3"
+            placeholder="Add details about this expense..."
+            pInputTextarea
+          ></textarea>
+          @if (expenseForm.get('description')?.hasError('required') && expenseForm.get('description')?.touched) {
+            <p-message severity="error" variant="simple" size="small">Description is required</p-message>
+          }
         </div>
       }
+
       @if (expenseForm.get('viewImage')?.value) {
-        <div class="card">
-          <p-toast />
-          <p-fileupload name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php" (onUpload)="onUpload($event)" [multiple]="true" accept="image/*" maxFileSize="1000000" mode="advanced">
+        <div class="flex flex-col gap-2">
+          <label class="font-semibold">Upload Receipt</label>
+          <p-fileupload
+            name="receipt"
+            (onUpload)="onUpload($event)"
+            [multiple]="false"
+            accept="image/*"
+            maxFileSize="5000000"
+            [auto]="true"
+            chooseLabel="Choose Image"
+            [showUploadButton]="false"
+            [showCancelButton]="false">
             <ng-template #empty>
-              <div>Drag and drop files to here to upload.</div>
+              <div class="flex flex-col items-center justify-center p-4 border-2 border-dashed rounded-lg">
+                <i class="pi pi-cloud-upload text-4xl mb-2 text-gray-400"></i>
+                <p class="text-gray-500">Drag and drop image here</p>
+              </div>
             </ng-template>
           </p-fileupload>
         </div>
       }
     </div>
-      <div class="flex mt-2 justify-end">
-        <button pButton label="Cancel" class="p-button-text"></button>
-        <button pButton label="Create"  type="submit" class="p-button-primary"></button>
-      </div>
-  </form>
 
+    <!-- Actions -->
+    <div class="flex justify-end gap-2 mt-6 pt-4 border-t">
+      <button
+        pButton
+        label="Cancel"
+        type="button"
+        class="p-button-text p-button-secondary"
+        (click)="close()"
+      ></button>
+      <button
+        pButton
+        label="Create Expense"
+        type="submit"
+        class="p-button-primary"
+        [loading]="false"
+      ></button>
+    </div>
+  </form>
 </p-dialog>
+
+<p-toast position="top-right" />

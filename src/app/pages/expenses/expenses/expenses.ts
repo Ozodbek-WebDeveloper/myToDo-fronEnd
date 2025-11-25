@@ -1,5 +1,5 @@
 import { Component,OnInit } from '@angular/core';
-import {ICategory, IExpenseItems} from '../../../models/user';
+import {ICategory, IExpense, IExpenseItems} from '../../../models/user';
 import {ExpenseService} from '../../../service/expense';
 import {finalize} from 'rxjs';
 import  {MessageService} from 'primeng/api';
@@ -16,13 +16,16 @@ export class Expenses implements OnInit {
   viewExpenseItems: boolean = false;
   isLoadingCategories: boolean = false;
   isLoadingExpensesItems: boolean = false;
+  isLoadingExpense: boolean = false;
   Categories!: ICategory[] ;
   ExpenseItems!: IExpenseItems [] ;
+  ExpensesDate!: IExpense[] ;
   constructor(private expenseService: ExpenseService, private  messageService: MessageService) {}
 
   ngOnInit() {
       this.getAllCategories()
       this.getAllexExpenseItems()
+      this.getAllExpense()
   }
 
   createCategory(category:ICategory) {
@@ -90,6 +93,44 @@ export class Expenses implements OnInit {
     this.expenseService.getAllExpenseItems().subscribe({
       next: (result) => {
         this.ExpenseItems =result;
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail:'Error loading  expense please try again',
+        })
+      }
+    })
+  }
+
+  createExpense(Items:IExpense) {
+    this.isLoadingExpense = true
+    this.expenseService.createExpense(Items).pipe(
+      finalize(() => this.isLoadingExpense = false),
+    ).subscribe({
+      next: (result) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'success',
+          detail:'Expense Category Created Successfully',
+        })
+        this.viewExpenses = false;
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail:'Error creating expense please try again',
+        })
+      }
+    })
+  }
+
+  getAllExpense(){
+    this.expenseService.getAllExpense().subscribe({
+      next: (result) => {
+        this.ExpensesDate =result;
       },
       error: (err) => {
         this.messageService.add({

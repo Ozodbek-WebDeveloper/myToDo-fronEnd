@@ -56,3 +56,4 @@ export  interface  IExpense{
   createdAt?: string | null,
   updatedAt?:string | null,
 }
+

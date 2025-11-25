@@ -11,6 +11,9 @@ import {RadioButtonModule} from 'primeng/radiobutton';
 import {CheckboxModule} from 'primeng/checkbox';
 import {Toast} from 'primeng/toast';
 import {FileUpload} from 'primeng/fileupload';
+import {Message} from 'primeng/message';
+import {TableModule} from 'primeng/table';
+import { RippleModule} from 'primeng/ripple';
 // components
 import { ExpensesRoutingModule } from './expenses-routing-module';
 import { Expenses } from './expenses/expenses';
@@ -18,8 +21,9 @@ import { ExpensesNav } from './expenses-nav/expenses-nav';
 import {CategoryDialog} from './components/category-dialog/category-dialog';
 import {ItemsDialog} from './components/items-dialog/items-dialog';
 import {Expense} from './components/expense/expense';
+import {ExpenseTable} from './components/expense-table/expense-table';
 @NgModule({
-  declarations: [ExpensesNav, Expenses,CategoryDialog,ItemsDialog, Expense],
+  declarations: [ExpensesNav, Expenses,CategoryDialog,ItemsDialog, Expense,ExpenseTable],
   imports: [
     CommonModule,
     ButtonModule,
@@ -35,6 +39,9 @@ import {Expense} from './components/expense/expense';
     Toast,
     ReactiveFormsModule,
     FileUpload,
+    Message,
+    TableModule,
+    RippleModule,
   ]
 })
 export class ExpensesModule {

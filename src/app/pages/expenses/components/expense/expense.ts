@@ -15,29 +15,44 @@ export class Expense implements OnInit {
   @Input() visible !:boolean
   @Input() expenseItems !: IExpenseItems[]
   @Output() closeDialog = new EventEmitter();
-
+  @Output() create:EventEmitter<IExpense> = new EventEmitter();
   expenseForm!: FormGroup;
   uploadedFiles: any[] = [];
-  value = ''
 
-  constructor(private fb: FormBuilder,private messageService: MessageService ) {
-  }
+
+  constructor(private fb: FormBuilder,private messageService: MessageService ) {}
 
   ngOnInit() {
     this.initForm()
+
+  }
+
+  private markAllAsTouched(): void {
+    Object.keys(this.expenseForm.controls).forEach((key) => {
+      const control = this.expenseForm.get(key);
+      control?.markAsTouched();
+    });
   }
 
   createExpense(){
-    console.log(this.getExpenseData())
+    if (this.expenseForm.invalid) {
+
+      this.markAllAsTouched();
+      return;
+    }
+    const  data = this.getExpenseData()
+    this.create.emit(data);
   }
 
-  getExpenseData(): Partial<IExpense> {
+
+  getExpenseData():IExpense {
     const formValue = this.expenseForm.value;
-    const data: Partial<IExpense> = {};
-     data.itemId = formValue.itemId;
-     data.name = formValue.name;
-     data.price = formValue.price;
-     data.paymentMethod = formValue.paymentMethod;
+    const data: IExpense = {
+      itemId: formValue.itemId,
+      name : formValue.name,
+      price: formValue.price,
+      paymentMethod: formValue.paymentMethod
+    };
     if (formValue.viewData && formValue.date) data.date = formValue.date;
     if (formValue.viewDescription && formValue.description) data.description = formValue.description;
     if (formValue.viewImage && formValue.receipt_image) data.receipt_image = formValue.receipt_image;
@@ -49,11 +64,11 @@ export class Expense implements OnInit {
   initForm(){
     this.expenseForm = this.fb.group({
       itemId:new FormControl(null, [Validators.required]),
-      name: new FormControl('', [Validators.required]),
-      description: new FormControl('', []),
-      price: new FormControl('', [Validators.required]),
+      name: new FormControl(null, [Validators.required]),
+      description: new FormControl(null, []),
+      price: new FormControl(null, [Validators.required]),
       date: new FormControl('', []),
-      paymentMethod: new FormControl('', [Validators.required]),
+      paymentMethod: new FormControl(null, [Validators.required]),
       receipt_image: new FormControl('', []),
       viewData: [false],
       viewDescription: [false],

@@ -8,6 +8,10 @@
     <app-items-dialog [isLoading]="isLoadingExpensesItems" [categories]="Categories" [visible]="viewExpenseItems" (closeDialog)="closeItems()" (create)="createExpenseItem($event)" />
   }
   @if (viewExpenses) {
-    <app-expense [expenseItems]="ExpenseItems" [visible]="viewExpenses" (closeDialog)="closeExpense()" />
+    <app-expense [expenseItems]="ExpenseItems" [visible]="viewExpenses" (closeDialog)="closeExpense()" (create)="createExpense($event)" />
   }
+
+  <div class="w-[80%] mx-auto mt-10"   >
+    <app-expense-table [expenses]="ExpensesDate" />
+  </div>
 </div>
