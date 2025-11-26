@@ -31,10 +31,21 @@ export class ExpenseService {
   }
 
   createExpense(expense:IExpense):Observable<IExpense>{
-    return  this.http.post<IExpense>(`${this.baseUrl}/expenses/expens`, expense);
+    return  this.http.post<IExpense>(`${this.baseUrl}/expenses/expense`, expense);
   }
 
   getAllExpense():Observable<IExpense[]>{
-    return  this.http.get<IExpense[]>(`${this.baseUrl}/expenses/allExpens`);
+    return  this.http.get<IExpense[]>(`${this.baseUrl}/expenses/allExpense`);
+  }
+
+  findOneExpense(id:string):Observable<IExpense>{
+    return this.http.get<IExpense>(`${this.baseUrl}/expenses/expense/${id}`);
+  }
+
+  updateExpense(id:string,updateDate:IExpense){
+    return this.http.put<IExpense>(`${this.baseUrl}/expenses/expense/${id}`, updateDate);
+  }
+  deleteExpense(id:string):Observable<IExpense> {
+    return this.http.delete<IExpense>(`${this.baseUrl}/expenses/expense/${id}`);
   }
 }

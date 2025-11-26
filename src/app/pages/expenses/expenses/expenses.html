@@ -1,5 +1,6 @@
 <div class="bg-gray-900 h-full  w-full p-4">
 <p-toast/>
+  <p-confirmDialog/>
     <app-expenses-nav (showCategory)="showCategory()" (showExpensesItems)="showExpensesItems()" (showExpenses)="showExpenses()"   />
   @if (viewCategories){
     <app-category-dialog [isLoading]="isLoadingCategories" [visible]="viewCategories" (closeDialog)="closeCategory()" (create)="createCategory($event)" />
@@ -8,10 +9,10 @@
     <app-items-dialog [isLoading]="isLoadingExpensesItems" [categories]="Categories" [visible]="viewExpenseItems" (closeDialog)="closeItems()" (create)="createExpenseItem($event)" />
   }
   @if (viewExpenses) {
-    <app-expense [expenseItems]="ExpenseItems" [visible]="viewExpenses" (closeDialog)="closeExpense()" (create)="createExpense($event)" />
+    <app-expense [isLoading]="isLoadingExpense" [isEditing]="isEditing" [expense]="oneExpenses" [expenseItems]="ExpenseItems" [visible]="viewExpenses" (closeDialog)="closeExpense()" (create)="createExpense($event)" (update)="updateExpense($event)" />
   }
 
   <div class="w-[80%] mx-auto mt-10"   >
-    <app-expense-table [expenses]="ExpensesDate" />
+      <app-expense-table [expenses]="ExpensesDate" (editExpense)="editExpense($event)" (deleteExpense)="confirmDeleteExpense($event)"  />
   </div>
 </div>

@@ -1,5 +1,5 @@
 <p-dialog
-  header="Create Expense"
+  [header]="isEditing? 'Editing Expense' : 'Create Expense'"
   [(visible)]="visible"
   (onHide)="close()"
   [modal]="true"
@@ -7,7 +7,7 @@
   [draggable]="false"
   [resizable]="false">
 
-  <form [formGroup]="expenseForm" (ngSubmit)="createExpense()">
+  <form [formGroup]="expenseForm" (ngSubmit)="createEdit()">
     <div class="flex flex-col gap-4">
 
       <!-- Items -->
@@ -174,10 +174,10 @@
       ></button>
       <button
         pButton
-        label="Create Expense"
+        [label]="isEditing? 'Editing Expense' : 'Create Expense'"
         type="submit"
         class="p-button-primary"
-        [loading]="false"
+        [loading]="isLoading"
       ></button>
     </div>
   </form>

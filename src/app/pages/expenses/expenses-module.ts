@@ -14,6 +14,8 @@ import {FileUpload} from 'primeng/fileupload';
 import {Message} from 'primeng/message';
 import {TableModule} from 'primeng/table';
 import { RippleModule} from 'primeng/ripple';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {ConfirmationService} from 'primeng/api';
 // components
 import { ExpensesRoutingModule } from './expenses-routing-module';
 import { Expenses } from './expenses/expenses';
@@ -42,6 +44,10 @@ import {ExpenseTable} from './components/expense-table/expense-table';
     Message,
     TableModule,
     RippleModule,
+    ConfirmDialogModule
+  ],
+  providers: [
+    ConfirmationService
   ]
 })
 export class ExpensesModule {

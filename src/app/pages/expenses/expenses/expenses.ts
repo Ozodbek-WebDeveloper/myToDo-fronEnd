@@ -2,7 +2,7 @@ import { Component,OnInit } from '@angular/core';
 import {ICategory, IExpense, IExpenseItems} from '../../../models/user';
 import {ExpenseService} from '../../../service/expense';
 import {finalize} from 'rxjs';
-import  {MessageService} from 'primeng/api';
+import  {MessageService, ConfirmationService} from 'primeng/api';
 
 @Component({
   selector: 'app-expenses',
@@ -20,7 +20,9 @@ export class Expenses implements OnInit {
   Categories!: ICategory[] ;
   ExpenseItems!: IExpenseItems [] ;
   ExpensesDate!: IExpense[] ;
-  constructor(private expenseService: ExpenseService, private  messageService: MessageService) {}
+  oneExpenses!: IExpense ;
+  isEditing: boolean = false;
+  constructor(private expenseService: ExpenseService, private  messageService: MessageService,private confirmationService: ConfirmationService) {}
 
   ngOnInit() {
       this.getAllCategories()
@@ -40,6 +42,7 @@ export class Expenses implements OnInit {
           detail:'Expense Category Created Successfully',
         })
         this.viewCategories = false;
+        this.getAllCategories()
       },
       error: (err) =>{
         this.messageService.add({
@@ -78,6 +81,7 @@ export class Expenses implements OnInit {
           detail:'Expense Items Created Successfully',
         })
         this.viewExpenseItems = false;
+        this.getAllexExpenseItems()
       },
       error: (err) => {
         this.messageService.add({
@@ -115,13 +119,78 @@ export class Expenses implements OnInit {
           summary: 'success',
           detail:'Expense Category Created Successfully',
         })
-        this.viewExpenses = false;
+       this.closeExpense()
+        this.getAllExpense()
       },
       error: (err) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
           detail:'Error creating expense please try again',
+        })
+      }
+    })
+  }
+
+  updateExpense(expense:IExpense) {
+      this.isLoadingExpense = true
+      const  id = expense._id ?? ''
+    console.log(expense)
+    this.expenseService.updateExpense(id,expense).pipe(
+      finalize(() => this.isLoadingExpense = false),
+    ).subscribe({
+      next: (result) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'success',
+          detail:'Expense Category Updated Successfully',
+        })
+       this.closeExpense()
+        this.getAllExpense()
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail:'Error updating expense please try again',
+        })
+      }
+    })
+  }
+
+  deleteExpense(id:string) {
+    this.expenseService.deleteExpense(id).subscribe({
+      next: (result) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'success',
+          detail:'Expense Category Deleted Successfully',
+        })
+        this.getAllExpense()
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail:'Error deleteing expense please try again',
+        })
+      }
+    })
+  }
+
+  findOneExpense(id:string) {
+    this.isLoadingExpense = true
+    this.expenseService.findOneExpense(id).pipe(
+      finalize(() => this.isLoadingExpense = false),
+    ).subscribe({
+      next: (result) => {
+          this.oneExpenses = result;
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail:'Error find  expense please try again',
         })
       }
     })
@@ -141,7 +210,37 @@ export class Expenses implements OnInit {
       }
     })
   }
+
   //-------------------------------------- helper
+  confirmDeleteExpense(id:string) {
+      this.confirmationService.confirm({
+        // target: event.target as EventTarget,
+        message: 'Do you want to delete this record?',
+        header: 'Danger Zone',
+        icon: 'pi  pi-info-circle',
+        rejectLabel: 'Cancel',
+        rejectButtonProps:{
+          label: 'Cancel',
+          severity: 'Secondary',
+          outlined: true,
+        },
+        acceptButtonProps:{
+          label: 'Delete',
+          severity: 'danger',
+        },
+        accept:() =>{
+            this.deleteExpense(id)
+        },
+        reject: () => {
+        }
+      })
+  }
+  editExpense(id:string) {
+    this.viewExpenses = true;
+    this.isEditing = true;
+    this.findOneExpense(id)
+  }
+
   showCategory(){
     this.viewCategories = true;
   }
@@ -164,5 +263,6 @@ export class Expenses implements OnInit {
 
   closeExpense(){
     this.viewExpenses = false;
+    this.isEditing = false;
   }
 }
