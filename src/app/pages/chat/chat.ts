@@ -10,7 +10,7 @@ import { SocketService } from '../../service/socket.service';
 import { Subscription } from 'rxjs';
 import { Auth } from '../../state/auth';
 import { AuthService } from '../../service/auth.service';
-import { IgetUser } from '../../models/user';
+import {IgetUser, Ipaging} from '../../models/user';
 import { environment } from '../../../environments/environment';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { faHome } from '@fortawesome/free-solid-svg-icons';
@@ -48,7 +48,10 @@ export class Chat implements OnInit, OnDestroy {
   baseApi = environment.baseApi + '/static/'
   faHome = faHome
   constructor(private socketService: SocketService, private auth: Auth, private authService: AuthService) { }
-
+  userPaging:Ipaging ={
+    page:1,
+    size:0
+  }
   ngOnInit() {
     this.authService.getMe()
     this.getAllUser()
@@ -95,7 +98,7 @@ export class Chat implements OnInit, OnDestroy {
   }
 
   async getAllUser() {
-    const res = await this.authService.getAllUser()
-    this.users = res
+    const res = await this.authService.getAllUser(this.userPaging)
+    this.users = res.res
   }
 }

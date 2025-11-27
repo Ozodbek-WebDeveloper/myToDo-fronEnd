@@ -1,5 +1,5 @@
 import { Component,OnInit } from '@angular/core';
-import {ICategory, IExpense, IExpenseItems} from '../../../models/user';
+import {ICategory, IExpense, IExpenseItems, IExpensePaging} from '../../../models/user';
 import {ExpenseService} from '../../../service/expense';
 import {finalize} from 'rxjs';
 import  {MessageService, ConfirmationService} from 'primeng/api';
@@ -22,6 +22,11 @@ export class Expenses implements OnInit {
   ExpensesDate!: IExpense[] ;
   oneExpenses!: IExpense ;
   isEditing: boolean = false;
+  paging: IExpensePaging = {
+    page:1,
+    size:10
+  }
+  totalPage!:number;
   constructor(private expenseService: ExpenseService, private  messageService: MessageService,private confirmationService: ConfirmationService) {}
 
   ngOnInit() {
@@ -197,9 +202,11 @@ export class Expenses implements OnInit {
   }
 
   getAllExpense(){
-    this.expenseService.getAllExpense().subscribe({
-      next: (result) => {
-        this.ExpensesDate =result;
+    this.expenseService.getAllExpense(this.paging).subscribe({
+      next: (result:any) => {
+        const  size = this.paging.size || 1
+        this.totalPage = Math.ceil(result.total / size);
+        this.ExpensesDate = result.res
       },
       error: (err) => {
         this.messageService.add({
@@ -210,7 +217,10 @@ export class Expenses implements OnInit {
       }
     })
   }
-
+  changPaging(num:number) {
+    this.paging.page = num;
+    this.getAllExpense()
+  }
   //-------------------------------------- helper
   confirmDeleteExpense(id:string) {
       this.confirmationService.confirm({

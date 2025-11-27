@@ -19,33 +19,35 @@ import {ConfirmationService} from 'primeng/api';
 // components
 import { ExpensesRoutingModule } from './expenses-routing-module';
 import { Expenses } from './expenses/expenses';
-import { ExpensesNav } from './expenses-nav/expenses-nav';
+import { ExpensesNav } from './components/expenses-nav/expenses-nav';
 import {CategoryDialog} from './components/category-dialog/category-dialog';
 import {ItemsDialog} from './components/items-dialog/items-dialog';
 import {Expense} from './components/expense/expense';
 import {ExpenseTable} from './components/expense-table/expense-table';
+import {Paging} from "../../components/paging/paging";
 @NgModule({
   declarations: [ExpensesNav, Expenses,CategoryDialog,ItemsDialog, Expense,ExpenseTable],
-  imports: [
-    CommonModule,
-    ButtonModule,
-    ExpensesRoutingModule,
-    DialogModule,
-    InputTextModule,
-    SelectModule,
-    FormsModule,
-    TextareaModule,
-    DatePickerModule,
-    RadioButtonModule,
-    CheckboxModule,
-    Toast,
-    ReactiveFormsModule,
-    FileUpload,
-    Message,
-    TableModule,
-    RippleModule,
-    ConfirmDialogModule
-  ],
+    imports: [
+        CommonModule,
+        ButtonModule,
+        ExpensesRoutingModule,
+        DialogModule,
+        InputTextModule,
+        SelectModule,
+        FormsModule,
+        TextareaModule,
+        DatePickerModule,
+        RadioButtonModule,
+        CheckboxModule,
+        Toast,
+        ReactiveFormsModule,
+        FileUpload,
+        Message,
+        TableModule,
+        RippleModule,
+        ConfirmDialogModule,
+        Paging
+    ],
   providers: [
     ConfirmationService
   ]

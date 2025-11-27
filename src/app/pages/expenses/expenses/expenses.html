@@ -15,4 +15,9 @@
   <div class="w-[80%] mx-auto mt-10"   >
       <app-expense-table [expenses]="ExpensesDate" (editExpense)="editExpense($event)" (deleteExpense)="confirmDeleteExpense($event)"  />
   </div>
+  @if (totalPage > 1) {
+    <div class="w-[90%] mx-auto">
+      <app-paging [pagin]="{totalPage:totalPage,currentPage:paging.page}" (changePage)="changPaging($event)" />
+    </div>
+  }
 </div>

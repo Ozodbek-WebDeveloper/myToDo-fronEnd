@@ -1,4 +1,4 @@
-import { IgetUser } from './../../models/user';
+import {IgetUser, Ipaging} from '../../models/user';
 import { Component, OnInit, ViewChild, ElementRef, } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../service/auth.service';
@@ -6,18 +6,21 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
 import { environment } from '../../../environments/environment';
 import { ButtonModule } from 'primeng/button';
-import { RouterLink } from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import { UserTable } from '../../components/user-table/user-table';
-import { MessageService } from 'primeng/api';
+import { MessageService,ConfirmationService } from 'primeng/api';
+import {Paging} from '../../components/paging/paging';
+import {ConfirmDialog} from 'primeng/confirmdialog';
 @Component({
   selector: 'app-profil',
-  imports: [FormsModule, FontAwesomeModule, ButtonModule, RouterLink, UserTable],
+  imports: [FormsModule, FontAwesomeModule, ButtonModule, RouterLink, UserTable, Paging, ConfirmDialog],
   templateUrl: './profil.html',
-  styleUrl: './profil.scss'
+  styleUrl: './profil.scss',
+  providers:[ConfirmationService]
 })
 
 export class Profil implements OnInit {
-  constructor(private auth: AuthService, private messageService: MessageService) { }
+  constructor(private auth: AuthService, private messageService: MessageService, private confirmationService: ConfirmationService,) { }
   @ViewChild('fileInput', { static: false }) fileInput!: ElementRef<HTMLInputElement>;
 
   ngOnInit(): void {
@@ -41,11 +44,21 @@ export class Profil implements OnInit {
     this.user = res
     console.log('my user', this.user);
   }
-
+  userPaging:Ipaging ={
+    page:1,
+    size:10
+  }
+  totalPage!:number
   editUser() {
     this.isEditing = true
   }
 
+
+   async changesPaging(num: number) {
+    this.userPaging.page = num;
+     await this.getAllUser()
+    console.log(this.users)
+  }
   async saveChanges() {
     const userId = this.user._id ?? ''
     console.log(this.user);
@@ -74,13 +87,19 @@ export class Profil implements OnInit {
   }
 
   async getAllUser() {
-    this.users = await this.auth.getAllUser()
+    const { res = [], total = 0 } = await this.auth.getAllUser(this.userPaging);
+
+    this.users = [...res];
+
+    const size = this.userPaging.size || 1;
+    this.totalPage = Math.ceil(total / size);
   }
 
   async updateUser(data: { id: string, date: IgetUser }) {
     try {
       const res = await this.auth.editMe(data.id, data.date)
       if (res?.data !== null) {
+        await this.getAllUser();
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
@@ -129,4 +148,31 @@ export class Profil implements OnInit {
       })
     }
   }
+
+  async confirmDeleteExpense(id:string) {
+    this.confirmationService.confirm({
+      // target: event.target as EventTarget,
+      message: 'Do you want to delete this record?',
+      header: 'Danger Zone',
+      icon: 'pi  pi-info-circle',
+      rejectLabel: 'Cancel',
+      rejectButtonProps:{
+        label: 'Cancel',
+        severity: 'Secondary',
+        outlined: true,
+      },
+      acceptButtonProps:{
+        label: 'Delete',
+        severity: 'danger',
+      },
+      accept:() =>{
+        this.deleteUser(id)
+      },
+      reject: () => {
+      }
+    })
+  }
+
+
 }
+

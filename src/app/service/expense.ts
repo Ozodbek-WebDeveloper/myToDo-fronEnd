@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import {ICategory, IExpense, IExpenseItems} from '../models/user';
+import {ICategory, IExpense, IExpenseItems, IExpensePaging} from '../models/user';
 
 
 @Injectable({
@@ -34,8 +34,8 @@ export class ExpenseService {
     return  this.http.post<IExpense>(`${this.baseUrl}/expenses/expense`, expense);
   }
 
-  getAllExpense():Observable<IExpense[]>{
-    return  this.http.get<IExpense[]>(`${this.baseUrl}/expenses/allExpense`);
+  getAllExpense(paging:IExpensePaging):Observable<IExpense[]>{
+    return  this.http.post<IExpense[]>(`${this.baseUrl}/expenses/allExpense`, paging);
   }
 
   findOneExpense(id:string):Observable<IExpense>{
@@ -45,6 +45,7 @@ export class ExpenseService {
   updateExpense(id:string,updateDate:IExpense){
     return this.http.put<IExpense>(`${this.baseUrl}/expenses/expense/${id}`, updateDate);
   }
+
   deleteExpense(id:string):Observable<IExpense> {
     return this.http.delete<IExpense>(`${this.baseUrl}/expenses/expense/${id}`);
   }

@@ -1,4 +1,6 @@
 import { Component,Output,EventEmitter } from '@angular/core';
+import  {Router} from '@angular/router';
+
 
 @Component({
   selector: 'app-expenses-nav',
@@ -11,6 +13,8 @@ export class ExpensesNav {
     @Output() showExpensesItems = new EventEmitter();
     @Output() showExpenses = new EventEmitter();
 
+    constructor( private router: Router) {
+    }
     Category():void{
       this.showCategory.emit();
     }
@@ -22,4 +26,8 @@ export class ExpensesNav {
     Expenses():void{
       this.showExpenses.emit();
     }
+
+  gotoHome():void{
+      this.router.navigate(['/']);
+  }
 }

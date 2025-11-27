@@ -20,10 +20,9 @@ import { AuthService } from '../../service/auth.service';
   imports: [TableModule, ToastModule, CommonModule, TagModule, SelectModule, ButtonModule, InputTextModule, FormsModule],
 })
 export class UserTable implements OnInit {
-  @Input() users: IgetUser[] = []
+  @Input() products: IgetUser[] = []
   @Output() editUser = new EventEmitter<{ id: string, date: IgetUser }>()
   @Output() deleteUser = new EventEmitter()
-  products!: IgetUser[];
   statuses!: SelectItem[];
   roles!: { label: string; value: string }[]
   clonedProducts: { [s: string]: IgetUser } = {};
@@ -31,7 +30,7 @@ export class UserTable implements OnInit {
   constructor(private messageService: MessageService, private auth: AuthService) { }
 
   ngOnInit() {
-    this.products = this.users
+
     this.statuses = [
       { label: 'Inactive', value: false },
       { label: 'Active', value: true },

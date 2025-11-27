@@ -5,62 +5,30 @@ import { TodoService } from '../../service/todo.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
 import { Dialog } from '../../components/dialog/dialog';
 import { ToastModule } from 'primeng/toast'
-import { MessageService } from 'primeng/api'
+import { MessageService, ConfirmationService } from 'primeng/api'
 import { faAdd, faChevronLeft, faChevronRight, faSearch } from '@fortawesome/free-solid-svg-icons'
 import { Paging } from "../../components/paging/paging";
 import { NavbarComponent } from "../../components/navbar/navbar";
-import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
 import { AuthService } from '../../service/auth.service';
 import { Router } from '@angular/router';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader'
 import { Auth } from '../../state/auth';
-
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {ConfirmDialog} from 'primeng/confirmdialog';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [TodoCard, FontAwesomeModule, Dialog, ToastModule, Paging, NavbarComponent, ConfirmDialog, NgxSkeletonLoaderModule],
+  imports: [TodoCard, FontAwesomeModule, Dialog, ToastModule, Paging, NavbarComponent, ConfirmDialog, NgxSkeletonLoaderModule, ConfirmDialog],
   templateUrl: './home.html',
   styleUrls: ['./home.scss'],
-  providers: [MessageService]
+  providers: [MessageService,ConfirmationService]
 })
 
 export class Home implements OnInit {
-  constructor(private todo: TodoService, private messageService: MessageService, private auth: AuthService, private route: Router, private me: Auth, private http: HttpClient) {
+  constructor(private todo: TodoService, private messageService: MessageService, private auth: AuthService, private route: Router, private me: Auth,private  confirmationService:ConfirmationService) {
     this.me.user$.subscribe(u => {
       this.user = u
     })
   }
-
-  // api = 'https://mytodo-backend-production.up.railway.app/api/auth/register'
-  // // data = { 'username', 'userna', '111111'}
-  // registerUser(): Observable<any> {
-
-  //   const dataToSend = {
-  //     name: 'userna',
-  //     email: 'userna@example.com',
-  //     password: '111111'
-  //   };
-
-  //   return this.http.post(this.api, dataToSend);
-  // }
-
-  // testRegister(): void {
-  //   this.registerUser().subscribe({
-  //     next: (response) => {
-  //       console.log('Server javobi:', response);
-  //       alert('Ro‘yxatdan o‘tish muvaffaqiyatli!');
-  //     },
-  //     error: (err) => {
-  //       console.error('API xatosi:', err);
-  //       alert(`Xato: ${err.error?.message || 'Server xatosi'}`);
-  //     },
-  //     complete: () => {
-  //       console.log('Ro‘yxatga olish jarayoni tugadi.');
-  //     }
-  //   });
-  // }
   ngOnInit(): void {
     this.getTodos()
     this.auth.getMe()
@@ -89,6 +57,10 @@ export class Home implements OnInit {
   isLoading: boolean = true
   user!: IgetUser | null
   isLoadingMail!: boolean
+  userPaging:Ipaging ={
+    page:1,
+    size:0
+  }
   //************************************* functions */
   async getTodos() {
     const res = await this.todo.getTodo(this.paging)
@@ -205,7 +177,8 @@ export class Home implements OnInit {
   }
 
   async getAll() {
-    this.users = await this.auth.getAllUser()
+    const res = await this.auth.getAllUser(this.userPaging)
+    this.users = res.res
   }
 
   async sendLinkEmail() {
@@ -220,7 +193,30 @@ export class Home implements OnInit {
     }
     this.isLoadingMail = false
   }
-  // helper  functions
+  //---------- helper  functions
+  async confirmDeleteExpense(id:string) {
+    this.confirmationService.confirm({
+      // target: event.target as EventTarget,
+      message: 'Do you want to delete this record?',
+      header: 'Danger Zone',
+      icon: 'pi  pi-info-circle',
+      rejectLabel: 'Cancel',
+      rejectButtonProps:{
+        label: 'Cancel',
+        severity: 'Secondary',
+        outlined: true,
+      },
+      acceptButtonProps:{
+        label: 'Delete',
+        severity: 'danger',
+      },
+      accept:() =>{
+        this.deleteTodo(id)
+      },
+      reject: () => {
+      }
+    })
+  }
   gotoProfil() {
     this.route.navigate(['/profil'])
   }

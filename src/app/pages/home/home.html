@@ -22,7 +22,7 @@
                 <div class="h-4 bg-gray-700 rounded w-16"></div>
                 <div class="h-4 bg-gray-700 rounded w-10"></div>
               </div>
-            </div>  
+            </div>
             }
           </div>
 
@@ -33,7 +33,7 @@
           </div>
           }
           @else {
-          <app-todo-card (edit)="findOne($event)" (delete)="deleteTodo($event)" [todos]="pagingDate" [users]="users">
+          <app-todo-card (edit)="findOne($event)" (delete)="confirmDeleteExpense($event)" [todos]="pagingDate" [users]="users">
           </app-todo-card>
           }
         </div>
@@ -50,8 +50,7 @@
 <app-dialog [isLoadingMail]="isLoadingMail" [isEditing]="isEditing" [editDate]="findOneDate"
   (sendLink)="sendLinkEmail()" (editTodo)="submitEdit($event)" (closeDialog)="closeDialog()"
   (addTodo)="createTodo($event)"></app-dialog>
-} @if (confirmDialog) {
-<app-confirm-dialog />
 }
 
+<p-confirmDialog/>
 <p-toast />

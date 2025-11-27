@@ -11,8 +11,8 @@
     @if (viewPage === 0) {
     <div class="profile-card">
       <div class="profile-header reletive">
-        <img [src]="preview || (user.avatar? baseApi +  user.avatar :'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnSA1zygA3rubv-VK0DrVcQ02Po79kJhXo_A&s' ) 
-            
+        <img [src]="preview || (user.avatar? baseApi +  user.avatar :'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnSA1zygA3rubv-VK0DrVcQ02Po79kJhXo_A&s' )
+
           " alt="User Avatar" class="avatar" />
         @if (isEditing) {<fa-icon (click)="AvatarClick()"
           class="text-blue-500 !texr-xs absolute right-28 bottom-12 border bg-white py-1 px-1 rounded-full cursor-pointer"
@@ -50,8 +50,15 @@
     }
     @if (viewPage === 1 && user.roles === 'admin') {
     <div>
-      <app-user-table (deleteUser)="deleteUser($event)" (editUser)="updateUser($event)" [users]="users" />
+      <app-user-table (deleteUser)="confirmDeleteExpense($event)" (editUser)="updateUser($event)" [products]="users" />
+      @if (totalPage > 1) {
+        <div class="w-[90%] mx-auto" >
+          <app-paging [pagin]="{currentPage:userPaging.page,totalPage:totalPage}" (changePage)="changesPaging($event)" />
+        </div>
+      }
     </div>
     }
   </div>
 </div>
+
+<p-confirmDialog/>

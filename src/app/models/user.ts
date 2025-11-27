@@ -16,8 +16,8 @@ export interface IgetUser {
 export interface Ipaging {
     page: number | null,
     size: number | null,
-    priority: string | null,
-    isCompleted: boolean
+    priority?: string | null,
+    isCompleted?: boolean
 }
 
 export interface Itodo {
@@ -57,3 +57,9 @@ export  interface  IExpense{
   updatedAt?:string | null,
 }
 
+export  interface  IExpensePaging{
+  page: number | null,
+  size: number | null,
+  priority?: number | null,
+  isCompleted?: boolean,
+}

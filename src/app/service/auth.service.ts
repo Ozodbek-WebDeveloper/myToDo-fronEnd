@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IgetUser, IUser } from '../models/user';
+import {IgetUser, Ipaging, IUser} from '../models/user';
 import axios from 'axios'
 import { environment } from '../../environments/environment';
 import axiosInstanse from '../api/axios.config'
@@ -71,9 +71,10 @@ export class AuthService {
     }
   }
 
-  async getAllUser() {
+  async getAllUser(paging:Ipaging) {
+    console.log( 'aadasdasd',paging)
     try {
-      const res = await axiosInstanse.get('/auth/getUsers')
+      const res = await axiosInstanse.post('/auth/getUsers',paging)
       return res.data
     } catch (error) {
       console.log(error);
