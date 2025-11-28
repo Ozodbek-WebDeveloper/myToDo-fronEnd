@@ -29,11 +29,12 @@ export class Home implements OnInit {
       this.user = u
     })
   }
-  ngOnInit(): void {
-    this.getTodos()
-    this.auth.getMe()
-    this.getAll()
-    // this.testRegister()
+  async ngOnInit(): Promise<void> {
+    await this.getTodos()
+    await this.auth.getMe()
+    if (this.user?.roles === 'admin') {
+      await this.getAll()
+    }
   }
 
 

@@ -35,6 +35,9 @@ export class TodoCard {
   }
 
   getName(userId: string) {
+    if (this.user?.roles === 'user') {
+      return this.user.name
+    }
     const auther = this.users.find(u => u._id === userId)
     return auther?.name
   }
