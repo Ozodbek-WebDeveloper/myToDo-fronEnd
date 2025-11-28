@@ -52,9 +52,9 @@ export class Chat implements OnInit, OnDestroy {
     page:1,
     size:0
   }
-  ngOnInit() {
-    this.authService.getMe()
-    this.getAllUser()
+  async ngOnInit() {
+    await this.authService.getMe()
+    await this.getAllUser()
     this.messageSubscription = this.socketService.getNewMessage().subscribe(
       (message: Message) => {
         console.log('FRONTEND TEST: Xabar komponentga yetib keldi:', message);
@@ -67,7 +67,7 @@ export class Chat implements OnInit, OnDestroy {
       this.currentUserId = user?._id ?? ''
     })
 
-    this.getHistory()
+    await this.getHistory()
   }
 
   getAvatar(id: string) {
