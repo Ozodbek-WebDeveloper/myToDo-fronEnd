@@ -9,7 +9,7 @@ import {IExpense} from '../../../../models/user';
 
 
 export class ExpenseTable implements OnInit{
-  @Input() expenses!: IExpense[];
+  @Input() expenses: IExpense[] = [];
   @Output() editExpense : EventEmitter<string> = new EventEmitter<string>();
   @Output() deleteExpense : EventEmitter<string> = new EventEmitter<string>();
   ngOnInit() {

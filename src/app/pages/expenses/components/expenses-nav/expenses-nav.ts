@@ -1,5 +1,6 @@
-import { Component,Output,EventEmitter } from '@angular/core';
+import {Component, Output, EventEmitter, OnInit, Input} from '@angular/core';
 import  {Router} from '@angular/router';
+import {ICategory, IExpenseItems} from '../../../../models/user';
 
 
 @Component({
@@ -8,13 +9,29 @@ import  {Router} from '@angular/router';
   styleUrl: './expenses-nav.scss',
   standalone:false
 })
-export class ExpensesNav {
+export class ExpensesNav implements OnInit {
+    @Input() Categories!: ICategory[];
+    @Input() items!: IExpenseItems[];
     @Output() showCategory = new EventEmitter();
     @Output() showExpensesItems = new EventEmitter();
     @Output() showExpenses = new EventEmitter();
+    @Output() changeFilter = new EventEmitter();
 
+    filterItems!:IExpenseItems[]
+    selectedCategory!: string | null;
+    selectedItems!: string | null;
     constructor( private router: Router) {
     }
+
+    ngOnInit() {
+
+    }
+
+    filter(categoryId: string) {
+      this.filterItems = this.items.filter(item => item.categoryId === categoryId);
+      this.changeFilter.emit({categoryId: this.selectedCategory});
+    }
+
     Category():void{
       this.showCategory.emit();
     }
@@ -28,6 +45,6 @@ export class ExpensesNav {
     }
 
   gotoHome():void{
-      this.router.navigate(['/']);
+      this.router.navigate(['/'])
   }
 }

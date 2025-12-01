@@ -60,6 +60,6 @@ export  interface  IExpense{
 export  interface  IExpensePaging{
   page: number | null,
   size: number | null,
-  priority?: number | null,
-  isCompleted?: boolean,
+  categoryId?: string | null,
+  itemID?: string | null,
 }

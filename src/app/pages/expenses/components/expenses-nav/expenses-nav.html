@@ -1,17 +1,51 @@
-<div class="w-[90%] p-2 mx-auto flex justify-between item-center " >
-  <div class="flex gap-2 item-center">
-    <button
-      pButton
-      pRipple
-      type="button"
-      icon="pi pi-home"
-      text
-      rounded
-      severity="secondary"
-      (click)="gotoHome()"
-    >home</button>
-    <p-button (click)="Category()"  label="add Catigory" icon="pi pi-plus" variant="outlined" severity="secondary" />
-    <p-button (click)="ExpensesItems()" label="add Item" icon="pi pi-plus" variant="outlined" severity="secondary" />
-  </div>
+<div class="w-[90%] p-2 mx-auto flex flex-col gap-4">
+  <div class=" flex justify-between item-center " >
+    <div class="flex gap-2 item-center">
+      <button
+        pButton
+        pRipple
+        type="button"
+        icon="pi pi-home"
+        text
+        rounded
+        severity="secondary"
+        (click)="gotoHome()"
+      >home</button>
+      <p-button (click)="Category()"  label="add Catigory" icon="pi pi-plus" variant="outlined" severity="secondary" />
+      <p-button (click)="ExpensesItems()" label="add Item" icon="pi pi-plus" variant="outlined" severity="secondary" />
+    </div>
     <p-button (click)="Expenses()" label="add expenses" icon="pi pi-plus" variant="outlined" severity="secondary" />
+  </div>
+
+  <div class="w-[90%] mx-auto flex  gap-2" >
+    <div class="card flex justify-center">
+      <p-select [options]="Categories" (onChange)="filter($event.value)" [(ngModel)]="selectedCategory" optionValue="_id" optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="Select a Category" class="w-full md:w-56">
+        <ng-template #selectedItem let-selectedOption>
+          <div class="flex items-center gap-2">
+            <div>{{ selectedOption.name }}</div>
+          </div>
+        </ng-template>
+        <ng-template let-country #item>
+          <div class="flex items-center gap-2">
+            <div>{{ country.name }}</div>
+          </div>
+        </ng-template>
+      </p-select>
+    </div>
+
+    <div class="card flex justify-center">
+      <p-select [options]="filterItems" [(ngModel)]="selectedItems" optionLabel="name"  [disabled]="!selectedCategory" [filter]="true" filterBy="name" [showClear]="true" placeholder="Select a Items" class="w-full md:w-56">
+        <ng-template #selectedItem let-selectedOption>
+          <div class="flex items-center gap-2">
+            <div>{{ selectedOption.name }}</div>
+          </div>
+        </ng-template>
+        <ng-template let-country #item>
+          <div class="flex items-center gap-2">
+            <div>{{ country.name }}</div>
+          </div>
+        </ng-template>
+      </p-select>
+    </div>
+  </div>
 </div>

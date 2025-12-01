@@ -206,7 +206,7 @@ export class Expenses implements OnInit {
       next: (result:any) => {
         const  size = this.paging.size || 1
         this.totalPage = Math.ceil(result.total / size);
-        this.ExpensesDate = result.res
+        this.ExpensesDate = result.res || []
       },
       error: (err) => {
         this.messageService.add({
@@ -222,6 +222,12 @@ export class Expenses implements OnInit {
     this.getAllExpense()
   }
   //-------------------------------------- helper
+
+  changeFilter(params: { itemsId: string; categoryId: string }) {
+    this.paging.categoryId = params.categoryId
+    this.getAllExpense()
+  }
+
   confirmDeleteExpense(id:string) {
       this.confirmationService.confirm({
         // target: event.target as EventTarget,

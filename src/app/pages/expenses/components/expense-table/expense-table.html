@@ -1,4 +1,7 @@
-<p-table [value]="expenses" stripedRows [tableStyle]="{'min-width': '50rem'}">
+<!--<pre>-->
+<!--  {{expenses | json}}-->
+<!--</pre>-->
+<p-table [value]="expenses" stripedRows  [tableStyle]="{'min-width': '50rem'}">
   <ng-template pTemplate="header">
     <tr>
       <th style="width:5%">№</th>
@@ -14,8 +17,8 @@
   <ng-template pTemplate="body" let-product let-rowIndex="rowIndex" >
     <tr>
       <td>{{rowIndex + 1}}</td>
-      <td>{{ product.itemId.categoryId.name }}</td>
-      <td>{{product.itemId.name}}</td>
+      <td>{{ product.item.category.name }}</td>
+      <td>{{product.item.name}}</td>
       <td>{{ product.name }}</td>
       <td>{{product.price}}</td>
       <td>{{product.date | date}}</td>
@@ -42,6 +45,17 @@
             severity="secondary"
             (click)="delete(product._id)"
           ></button>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="8">
+        <div class="flex flex-col items-center justify-center py-10 opacity-70">
+          <i class="pi pi-inbox text-5xl mb-3"></i>
+          <p class="text-lg font-semibold">No Data Found</p>
+          <p class="text-sm">There are no expenses available.</p>
         </div>
       </td>
     </tr>
