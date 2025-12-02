@@ -223,8 +223,9 @@ export class Expenses implements OnInit {
   }
   //-------------------------------------- helper
 
-  changeFilter(params: { itemsId: string; categoryId: string }) {
+  changeFilter(params: { itemId: string; categoryId: string }) {
     this.paging.categoryId = params.categoryId
+    this.paging.itemId = params.itemId
     this.getAllExpense()
   }
 

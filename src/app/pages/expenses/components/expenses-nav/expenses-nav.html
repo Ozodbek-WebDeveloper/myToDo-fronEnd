@@ -34,7 +34,7 @@
     </div>
 
     <div class="card flex justify-center">
-      <p-select [options]="filterItems" [(ngModel)]="selectedItems" optionLabel="name"  [disabled]="!selectedCategory" [filter]="true" filterBy="name" [showClear]="true" placeholder="Select a Items" class="w-full md:w-56">
+      <p-select [options]="filterItems" (onChange)="changeItems()" [(ngModel)]="selectedItems" optionValue="_id" optionLabel="name"  [disabled]="!selectedCategory" [filter]="true" filterBy="name" [showClear]="true" placeholder="Select a Items" class="w-full md:w-56">
         <ng-template #selectedItem let-selectedOption>
           <div class="flex items-center gap-2">
             <div>{{ selectedOption.name }}</div>

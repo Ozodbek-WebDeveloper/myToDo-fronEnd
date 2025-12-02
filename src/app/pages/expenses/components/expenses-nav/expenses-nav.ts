@@ -32,6 +32,10 @@ export class ExpensesNav implements OnInit {
       this.changeFilter.emit({categoryId: this.selectedCategory});
     }
 
+    changeItems() {
+        this.changeFilter.emit({itemId:this.selectedItems,categoryId: this.selectedCategory});
+    }
+
     Category():void{
       this.showCategory.emit();
     }

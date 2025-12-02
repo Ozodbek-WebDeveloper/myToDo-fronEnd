@@ -61,5 +61,5 @@ export  interface  IExpensePaging{
   page: number | null,
   size: number | null,
   categoryId?: string | null,
-  itemID?: string | null,
+  itemId?: string | null,
 }
