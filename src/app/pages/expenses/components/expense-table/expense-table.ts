@@ -13,7 +13,6 @@ export class ExpenseTable implements OnInit{
   @Output() editExpense : EventEmitter<string> = new EventEmitter<string>();
   @Output() deleteExpense : EventEmitter<string> = new EventEmitter<string>();
   ngOnInit() {
-
   }
 
   edit(id:string){
