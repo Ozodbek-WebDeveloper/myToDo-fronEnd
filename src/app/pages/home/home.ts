@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,signal,effect,computed } from '@angular/core';
 import { TodoCard } from '../../components/todo-card/todo-card';
 import { IgetUser, Ipaging, Itodo } from '../../models/user';
 import { TodoService } from '../../service/todo.service';
@@ -14,6 +14,8 @@ import { Router } from '@angular/router';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader'
 import { Auth } from '../../state/auth';
 import {ConfirmDialog} from 'primeng/confirmdialog';
+
+// bizda asosas 3 ta signal bor = 1.signal 2. Computed 3.Effect
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -36,6 +38,8 @@ export class Home implements OnInit {
       await this.getAll()
     }
   }
+
+  count = signal(0)
 
 
   showDialog: boolean = false
@@ -63,6 +67,23 @@ export class Home implements OnInit {
     size:0
   }
   //************************************* functions */
+
+
+
+  plus (){
+    // this.count.set(2)
+    this.count.update(c => ++c)
+  }
+
+  myEffect =  effect(() => {
+    console.log('Count o‘zgardi:', this.count());
+  });
+
+  test = computed(() => {
+    console.log(this.count() *3)
+   return  this.count() * 3
+  })
+
   async getTodos() {
     const res = await this.todo.getTodo(this.paging)
     this.pagingDate = res
@@ -218,7 +239,7 @@ export class Home implements OnInit {
       }
     })
   }
-  gotoProfil() {
+  gotoProfile() {
     this.route.navigate(['/profil'])
   }
 
