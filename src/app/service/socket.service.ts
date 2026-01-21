@@ -13,7 +13,7 @@ export class SocketService {
   constructor(private ngZone: NgZone) {
     this.ngZone.runOutsideAngular(() => {
       // 💡 ENG MUHIM QADAM: Socket ulanishini o'rnatish
-      this.socket = io('http://localhost:8000', {
+      this.socket = io('http://10.1.1.40:8000', {
         reconnection: true,
         transports: ['websocket', 'polling']
       });

@@ -72,7 +72,6 @@ export class Chat implements OnInit, OnDestroy {
 
   getAvatar(id: string) {
     const user = this.users.find(u => u._id === id);
-    // agar user mavjud bo‘lsa va avatar bo‘sh bo‘lmasa, this.baseApi + user.avatar, aks holda default
     return user && user.avatar ? this.baseApi + user.avatar : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnSA1zygA3rubv-VK0DrVcQ02Po79kJhXo_A&s';
   }
 
