@@ -39,7 +39,6 @@ export class Home implements OnInit {
     }
   }
 
-  count = signal(0)
 
 
   showDialog: boolean = false
@@ -67,23 +66,6 @@ export class Home implements OnInit {
     size:0
   }
   //************************************* functions */
-
-
-
-  plus (){
-    // this.count.set(2)
-    this.count.update(c => ++c)
-  }
-
-  myEffect =  effect(() => {
-    console.log('Count o‘zgardi:', this.count());
-  });
-
-  test = computed(() => {
-    console.log(this.count() *3)
-   return  this.count() * 3
-  })
-
   async getTodos() {
     const res = await this.todo.getTodo(this.paging)
     this.pagingDate = res
